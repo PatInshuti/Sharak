@@ -93,7 +93,7 @@ const Home = (props) =>{
                 </div>
             </div>
 
-            <div style={{"display": "flex", "flexDirection": "column", "alignItems": "center", "height":"100%", width:"90%", margin:"0 auto", marginTop:"20%"}}>
+            <div style={{"display": "flex", "flexDirection": "column", "alignItems": "center", "height":"100%", width:"90%", margin:"0 auto", marginTop:"6rem"}}>
                 
                 <div style={{marginTop:"1rem"}}>
                     <h1 style={{fontSize:"43px"}}>HELLO,</h1>
