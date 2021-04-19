@@ -1,6 +1,5 @@
 import React,{useState,useEffect} from "react";
 import nyuadLogo from '../images/nyuad-logo.jpeg';
-import './login.css'
 
 const Login = (props) =>{
 

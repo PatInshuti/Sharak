@@ -7,18 +7,29 @@ import {
 
 import Home from './views/home';
 import Login from './views/login';
+import Messages from './views/messages';
+import Profile from './views/profile';
+
 
 const App = () =>{
   return (
     <Router>
         <Switch>
 
-          <Route exact path="/">
+          <Route exact path="/home">
             <Home/>
           </Route>
 
           <Route exact path="/login">
             <Login/>
+          </Route>
+
+          <Route exact path="/messages">
+            <Messages/>
+          </Route>
+
+          <Route exact path="/profile">
+            <Profile/>
           </Route>
 
           <Route exact path="*">
