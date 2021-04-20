@@ -7,8 +7,10 @@ import {
 
 import Home from './views/home';
 import Login from './views/login';
-import Messages from './views/messages';
+import AllRequests from './views/requests';
 import Profile from './views/profile';
+import RequestSwipe from './views/requestSwipe';
+import RequestCampusDirhams from './views/requestDirhams';
 
 
 const App = () =>{
@@ -24,12 +26,20 @@ const App = () =>{
             <Login/>
           </Route>
 
-          <Route exact path="/messages">
-            <Messages/>
+          <Route exact path="/allRequests">
+            <AllRequests/>
           </Route>
 
           <Route exact path="/profile">
             <Profile/>
+          </Route>
+
+          <Route exact path="/requestSwipe">
+            <RequestSwipe/>
+          </Route>
+
+          <Route exact path="/requestCampusDirhams">
+            <RequestCampusDirhams/>
           </Route>
 
           <Route exact path="*">

@@ -34,10 +34,16 @@ MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (e
     next();
   })
     
+  
+  
 
   app.post('/test', (req, res) => {
     console.log("here")
   })
+
+
+
+
 
   // Handle React routing, return all requests to React app
   app.get('/*', function(req, res) {

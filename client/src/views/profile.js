@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from "react";
 import { useHistory } from "react-router-dom";
 import { ReactComponent as HomeSVG } from '../images/home.svg';
-import { ReactComponent as MessagesSVG } from '../images/messages.svg';
+import { ReactComponent as ExchangeSVG } from '../images/exchange.svg';
 import { ReactComponent as ProfileSVG } from '../images/profile.svg';
 
 import '../index.css';
@@ -17,15 +17,34 @@ const Home = (props) =>{
         balance:{
             meal_swipes:8,
             campus_dirhams:678
-        }
+        },
+
+        giving_swipes_status: true,
+        giving_campus_dirhams_status:false
     })
 
-    const {username,userStatus,balance} = state;
+    const {username,userStatus,balance,giving_swipes_status,giving_campus_dirhams_status} = state;
 
 
     const onChange = e => {
-        setState({...state, [e.target.name]:e.target.value  });    
-    } 
+
+        if (e.target.name === "giving_swipes_status"){
+            setState({...state, [e.target.name]: !giving_swipes_status }); 
+
+        }
+
+        else if(e.target.name === "giving_campus_dirhams_status"){
+            setState({...state, [e.target.name]: !giving_campus_dirhams_status }); 
+        }
+        
+    }
+    
+    useEffect(()=>{
+        // set status
+        // setState({...state,giving_swipes_status:true,giving_campus_dirhams_status:true})
+    
+
+    },[])
 
 
     const goTo = (location) =>{
@@ -51,26 +70,37 @@ const Home = (props) =>{
                     <h4 style={{"color":"var(--mainColor)", textAlign:"center"}}>{username}</h4>
                 </div>
 
-                <div style={{display:"flex", flexDirection:"column", alignItems:"center", marginTop:"0px"}}>
+                <div style={{display:"flex", flexDirection:"column", alignItems:"left", marginTop:"0px"}}>
                     <h1 style={{fontSize:"18px", marginBottom:"0px"}}>CURRENT BALANCE:</h1>
                     <p style={{fontWeight:"400", marginBottom:"0px"}}>Meal Swipes: <span style={{fontWeight:"600", color:"var(--mainColor)"}}>{balance.meal_swipes}</span></p>
                     <p style={{fontWeight:"400", marginBottom:"0px"}}>Campus Dirhams: <span style={{fontWeight:"600", color:"var(--mainColor)"}}>{balance.campus_dirhams}</span></p>
                 </div>
 
-                <div style={{display:"flex", flexDirection:"column", alignItems:"center", marginTop:"2.5rem"}}>
+                <div style={{display:"flex", flexDirection:"column", alignItems:"left", marginTop:"2.5rem"}}>
                     <h1 style={{fontSize:"18px", marginBottom:"0px"}}>CURRENT STATUS:</h1>
-                    <p style={{fontWeight:"400", marginBottom:"0px"}}>{userStatus}</p>
+                        <div>
+                            <div style={{marginTop:"16px"}}>
+                                <label style={{fontSize:"16px", fontWeight: "400"}}>Giving swipes</label>
+                                <input name="giving_swipes_status" id="apple-switch-swipes" checked={giving_swipes_status} className="apple-switch" onChange={onChange} type="checkbox" />
+                            </div>
+
+                            <div>
+                                <label style={{marginTop:"16px", fontSize:"16px", fontWeight: "400"}}>Giving campus Dirhams</label>
+                                <input name="giving_campus_dirhams_status" id="apple-switch-dirhams" className="apple-switch" type="checkbox" />
+                            </div>
+
+                        </div> 
                 </div>
 
-                <div style={{marginTop:"20px", paddingBottom:"70px"}}>
+                {/* <div style={{marginTop:"20px", paddingBottom:"70px"}}>
                     <button className="contact-button">Edit Account Info</button>
-                </div>
+                </div> */}
 
             </div>
 
             <div className="footer">
                 <HomeSVG width="27px" onClick={()=>goTo("/home")}/>
-                <MessagesSVG width="27px" onClick={()=>goTo("/messages")}/>
+                <ExchangeSVG width="27px" onClick={()=>goTo("/allRequests")}/>
                 <ProfileSVG width="27px" fill="var(--mainColor)" onClick={()=>goTo("/profile")}/>
             </div>
         </div>

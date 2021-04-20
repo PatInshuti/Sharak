@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from "react";
 import { useHistory } from "react-router-dom";
 import { ReactComponent as HomeSVG } from '../images/home.svg';
-import { ReactComponent as MessagesSVG } from '../images/messages.svg';
+import { ReactComponent as ExchangeSVG } from '../images/exchange.svg';
 import { ReactComponent as ProfileSVG } from '../images/profile.svg';
 
 
@@ -40,7 +40,7 @@ const Home = (props) =>{
             return(
                 <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
                     <p style={{marginTop:"2rem", fontWeight:"400", textAlign:"center"}}>There are currently <b>{systemStatus.giving_away_swipes}</b> students giving away swipes.</p>
-                    <button className="contact-button">Contact</button>
+                    <button className="contact-button" onClick={()=>{ history.push("/requestSwipe") }}>Request Swipes</button>
                 </div>
             )
         }
@@ -49,7 +49,7 @@ const Home = (props) =>{
             return(
                 <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
                     <p style={{marginTop:"2rem", fontWeight:"400", textAlign:"center"}}>There are currently <b>{systemStatus.giving_away_campus_dirhams}</b> students giving away swipes.</p>
-                    <button className="contact-button">Contact</button>
+                    <button className="contact-button" onClick={()=>{ history.push("/requestCampusDirhams") }}>Request Campus Dirhams</button>
                 </div>
             ) 
         }
@@ -72,7 +72,7 @@ const Home = (props) =>{
             )
         }
 
-        if (userStatus === "NOT SURE"){
+        if (userStatus === "NEUTRAL"){
             return(
                 <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
                     <p style={{marginTop:"2rem", fontWeight:"400", textAlign:"center"}}>....</p>
@@ -102,13 +102,11 @@ const Home = (props) =>{
 
                 <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
                     <h1 style={{fontSize:"23px"}}>What's your Status?</h1>
-                    <select  name="userStatus" value={userStatus} defaultValue={userStatus} onChange={(e) => onChange(e)} class="custom-select">
+                    <select name="userStatus" value={state.userStatus} onChange={(e) => onChange(e)} className="custom-select">
                         <option value="">Select Status</option>
-                        <option value="NEED SWIPES" selected>NEED SWIPES</option>
-                        <option value="NEED CAMPUS DIRHAMS" selected>NEED CAMPUS DIRHAMS</option>
-                        <option value="GIVING AWAY SWIPES" selected>GIVING AWAY SWIPES</option>
-                        <option value="GIVING AWAY CAMPUS DIRHAMS" selected>GIVING AWAY CAMPUS DIRHAMS</option>
-                        <option value="NOT SURE" selected>NOT SURE</option>
+                        <option value="NEUTRAL">NEUTRAL</option>
+                        <option value="NEED SWIPES">NEED SWIPES</option>
+                        <option value="NEED CAMPUS DIRHAMS">NEED CAMPUS DIRHAMS</option>
                     </select>
                 </div>
 
@@ -120,7 +118,7 @@ const Home = (props) =>{
 
             <div className="footer">
                 <HomeSVG fill="var(--mainColor)" width="27px" onClick={()=>goTo("/home")}/>
-                <MessagesSVG width="27px" onClick={()=>goTo("/messages")}/>
+                <ExchangeSVG width="27px" onClick={()=>goTo("/allRequests")}/>
                 <ProfileSVG width="27px" onClick={()=>goTo("/profile")}/>
             </div>
         </div>
