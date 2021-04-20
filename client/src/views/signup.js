@@ -2,7 +2,7 @@ import React,{useState,useEffect} from "react";
 import nyuadLogo from '../images/nyuad-logo.jpeg';
 import { useHistory } from "react-router-dom";
 
-const Login = (props) =>{
+const Signup = (props) =>{
 
     const history = useHistory();
 
@@ -22,9 +22,9 @@ const Login = (props) =>{
     const submitForm = e =>{
         e.preventDefault();
 
-        if ((email !== "") && (email.match(emailRegex)[0] === email) && (password.length >= 4)) {
+        if ((email !== "" && username.length >= 3) && (email.match(emailRegex)[0] === email) && (password.length >= 4)) {
             
-            const data = {email,password}
+            const data = {username,email,password}
 
             const requestOptions = {
                 method: 'POST',
@@ -32,7 +32,7 @@ const Login = (props) =>{
                 body: JSON.stringify(data)
             };
           
-            fetch('http://127.0.0.1:6800/api/login', requestOptions)
+            fetch('http://127.0.0.1:6800/api/signup', requestOptions)
                 .then(response => response.json())
                 .then(data => {
 
@@ -63,6 +63,11 @@ const Login = (props) =>{
             </div>
 
             <div style={{"display": "flex", "flexDirection":"column", "width":"85%", "marginTop":"2rem"}}>
+
+                <div style={{"marginTop":"15px"}}>
+                    <input name="username" value={username} placeholder="Username" type="text" onChange={(e)=>onChange(e)} required/>
+                </div>
+
                 <div style={{"marginTop":"15px"}}>
                     <input name="email" value={email} placeholder="Email" type="email" onChange={(e)=>onChange(e)} required/>
                 </div>
@@ -72,11 +77,11 @@ const Login = (props) =>{
                 </div>
 
                 <div style={{"margin":"0 auto", "marginTop":"15px"}}>
-                    <button className="login-button" onClick={(e)=>submitForm(e)}>Login</button>
+                    <button className="login-button" onClick={(e)=>submitForm(e)}>Signup</button>
                 </div>
             </div>
         </div>
     )
 }
 
-export default Login
+export default Signup

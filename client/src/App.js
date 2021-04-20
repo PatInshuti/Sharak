@@ -7,6 +7,7 @@ import {
 
 import Home from './views/home';
 import Login from './views/login';
+import Signup from './views/signup';
 import AllRequests from './views/requests';
 import Profile from './views/profile';
 import RequestSwipe from './views/requestSwipe';
@@ -24,6 +25,10 @@ const App = () =>{
 
           <Route exact path="/login">
             <Login/>
+          </Route>
+
+          <Route exact path="/signup">
+            <Signup/>
           </Route>
 
           <Route exact path="/allRequests">

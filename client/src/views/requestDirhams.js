@@ -51,7 +51,7 @@ const Home = (props) =>{
                             </div>
 
                             <div>
-                                <input style={{width:"50px", padding:"5px"}} type="number" min="1"/>
+                                <input style={{width:"50px", padding:"5px"}} type="number" pattern="\d*" min="1"/>
                                 <button className="accept-button" style={{marginLeft:"15px"}}>Request</button>
                             </div>
 
@@ -67,7 +67,7 @@ const Home = (props) =>{
                             </div>
 
                             <div>
-                                <input style={{width:"50px", padding:"5px"}} type="number" min="1"/>
+                                <input style={{width:"50px", padding:"5px"}} type="number" pattern="\d*" min="1"/>
                                 <button className="accept-button" style={{marginLeft:"15px"}}>Request</button>
                             </div>
 
@@ -83,7 +83,7 @@ const Home = (props) =>{
                             </div>
 
                             <div>
-                                <input style={{width:"50px", padding:"5px"}} type="number" min="1"/>
+                                <input style={{width:"50px", padding:"5px"}} type="number" pattern="\d*" min="1"/>
                                 <button className="accept-button" style={{marginLeft:"15px"}}>Request</button>
                             </div>
 
@@ -99,7 +99,7 @@ const Home = (props) =>{
                             </div>
 
                             <div>
-                                <input style={{width:"50px", padding:"5px"}} type="number" min="1"/>
+                                <input style={{width:"50px", padding:"5px"}} type="number" pattern="\d*" min="1"/>
                                 <button className="accept-button" style={{marginLeft:"15px"}}>Request</button>
                             </div>
 
@@ -115,7 +115,7 @@ const Home = (props) =>{
                             </div>
 
                             <div>
-                                <input style={{width:"50px", padding:"5px"}} type="number" min="1"/>
+                                <input style={{width:"50px", padding:"5px"}} type="number" pattern="\d*" min="1"/>
                                 <button className="accept-button" style={{marginLeft:"15px"}}>Request</button>
                             </div>
 
