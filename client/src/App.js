@@ -19,12 +19,12 @@ const App = () =>{
     <Router>
         <Switch>
 
-          <Route exact path="/home">
-            <Home/>
+        <Route exact path="/login">
+            <Login/>
           </Route>
 
-          <Route exact path="/login">
-            <Login/>
+          <Route exact path="/home">
+            <Home/>
           </Route>
 
           <Route exact path="/signup">
@@ -48,7 +48,7 @@ const App = () =>{
           </Route>
 
           <Route exact path="*">
-            <Home />
+            <Login />
           </Route>
 
         </Switch>

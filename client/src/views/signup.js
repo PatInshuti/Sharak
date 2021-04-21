@@ -39,6 +39,7 @@ const Signup = (props) =>{
                     console.log(data)
         
                   if (data.status === 200){
+                        localStorage.setItem('userId', data.response);  
                         history.push(`/home`);
                     }
         

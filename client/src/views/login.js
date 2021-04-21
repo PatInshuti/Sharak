@@ -19,6 +19,24 @@ const Login = (props) =>{
         setState({...state, [e.target.name]:e.target.value  });    
     } 
 
+    useEffect(()=>{
+        let retrievedUserId = localStorage.getItem("userId");
+        // check if the user exists in the database
+
+        fetch(`http://127.0.0.1:6800/api/getUser/${retrievedUserId}`)
+        .then(response => response.json())
+        .then(data => {
+
+            if (data.status == 400){
+                history.push("/login")
+            }
+
+            else{
+                history.push("/home")
+            }
+        })
+    },[])
+
     const submitForm = e =>{
         e.preventDefault();
 
@@ -39,6 +57,8 @@ const Login = (props) =>{
                     console.log(data)
         
                   if (data.status === 200){
+                        //save the data.response (ID) to localstorage
+                        localStorage.setItem('userId', data.response);   
                         history.push(`/home`);
                     }
         
