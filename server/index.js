@@ -138,7 +138,7 @@ MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (e
       }
       let retrievedUserId = req.params.retrievedUserId;
       
-      if (retrievedUserId == null){
+      if (req.params.retrievedUserId === "null"){
         data.status = 400;
         res.json(data)
       }
@@ -201,6 +201,39 @@ MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (e
     })
   
     // ================================== End of edit user Route ==================================
+
+
+// ================================== Beginning system Status route ==================================
+
+    app.get("/api/systemStatus", (req, res)=>{
+
+      let data = {
+        status:null,
+        response:null,
+        error:null
+      }
+
+      data.response = {}
+
+      usersCollection.find({"givingSwipesStatus":true}).toArray().then(foundUsers =>{
+        data.response["givingSwipes"] = foundUsers;
+
+        usersCollection.find({"givingCampusDirhamsStatus":true}).toArray().then(foundUsers=>{
+          data.response["givingCampusDirhams"] = foundUsers;
+          data.status = 200;
+          res.json(data)
+        })
+      })
+
+
+      
+
+
+
+  
+    })
+  
+// ================================== End of system status route ==================================
 
   app.post('/test', (req, res) => {
     console.log("here")

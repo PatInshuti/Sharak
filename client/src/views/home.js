@@ -18,7 +18,7 @@ const Home = (props) =>{
         },
         loading:true,
         userStatus:"",
-        loading:true,
+        loadingSystemstatus:true,
 
         meal_swipes:0,
         campus_dirhams:0,
@@ -26,15 +26,12 @@ const Home = (props) =>{
         giving_campus_dirhams_status:"",
 
         systemStatus:{
-            giving_away_swipes:10,
-            giving_away_campus_dirhams:7,
-            need_campus_dirhams: 8,
-            need_swipes:9
+            giving_away_swipes:[],
+            giving_away_campus_dirhams:[]
         }
     })
 
-    const {userData,userStatus,systemStatus,loading,giving_swipes_status,giving_campus_dirhams_status} = state;
-
+    const {userData,userStatus,systemStatus,loading,giving_swipes_status,giving_campus_dirhams_status,loadingSystemstatus} = state;
 
     const onChange = e => {
         setState({...state, [e.target.name]:e.target.value  });   
@@ -72,6 +69,7 @@ const Home = (props) =>{
         let retrievedUserId = localStorage.getItem("userId");
         // check if the user exists in the database
 
+        //retriece user's data
         fetch(`http://127.0.0.1:6800/api/getUser/${retrievedUserId}`)
         .then(response => response.json())
         .then(data => {
@@ -97,12 +95,39 @@ const Home = (props) =>{
     },[loading])
 
 
+    useEffect(()=>{
+
+            //retrieve data for the whole system
+            fetch(`http://127.0.0.1:6800/api/systemStatus`)
+            .then(response => response.json())
+            .then(data => {
+    
+                if (data.status == 400){
+                    console.log("easter egg")
+                }
+    
+                else{
+    
+                    let resp = data.response
+    
+                    setState({...state,
+                        systemStatus:{
+                            ...state.systemStatus,
+                            giving_away_campus_dirhams:resp.givingCampusDirhams,
+                            giving_away_swipes:resp.givingSwipes,
+                        },
+                        loadingSystemstatus:false
+                    })
+                }
+            })
+    },[loadingSystemstatus])
+
     const displayUserOptions = () =>{
 
         if (userStatus === "NEED SWIPES"){
             return(
                 <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-                    <p style={{marginTop:"2rem", fontWeight:"400", textAlign:"center"}}>There are currently <b>{systemStatus.giving_away_swipes}</b> students giving away swipes.</p>
+                    <p style={{marginTop:"2rem", fontWeight:"400", textAlign:"center"}}>There are currently <b>{systemStatus.giving_away_swipes.length}</b> students giving away swipes.</p>
                     <button className="contact-button" onClick={()=>{ history.push("/requestSwipe") }}>Request Swipes</button>
                 </div>
             )
@@ -111,28 +136,10 @@ const Home = (props) =>{
         if (userStatus === "NEED CAMPUS DIRHAMS"){
             return(
                 <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-                    <p style={{marginTop:"2rem", fontWeight:"400", textAlign:"center"}}>There are currently <b>{systemStatus.giving_away_campus_dirhams}</b> students giving away swipes.</p>
+                    <p style={{marginTop:"2rem", fontWeight:"400", textAlign:"center"}}>There are currently <b>{systemStatus.giving_away_campus_dirhams.length}</b> students giving away swipes.</p>
                     <button className="contact-button" onClick={()=>{ history.push("/requestCampusDirhams") }}>Request Campus Dirhams</button>
                 </div>
             ) 
-        }
-
-        if (userStatus === "GIVING AWAY SWIPES"){
-            return(
-                <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-                    <p style={{marginTop:"2rem", fontWeight:"400", textAlign:"center"}}>There are currently <b>{systemStatus.need_swipes}</b> student giving away swipes.</p>
-                    <button className="contact-button">Contact</button>
-                </div>
-            )
-        }
-
-        if (userStatus === "GIVING AWAY CAMPUS DIRHAMS"){
-            return(
-                <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-                    <p style={{marginTop:"2rem", fontWeight:"400", textAlign:"center"}}>There are currently <b>{systemStatus.need_campus_dirhams}</b> students who need swipes.</p>
-                    <button className="contact-button">Contact</button>
-                </div>
-            )
         }
 
         if (userStatus === "NEUTRAL"){
@@ -147,7 +154,7 @@ const Home = (props) =>{
 
 
     const displayAllContent = () =>{
-        if (loading === true){
+        if (loading === true || loadingSystemstatus === true){
             return(
                 <div style={{height:"100%", display:"flex", justifyContent:"center", alignItems:"center"}}>
                     <h3>Loading...</h3>
@@ -155,7 +162,7 @@ const Home = (props) =>{
             )
         }
 
-        else if(loading === false){
+        else if(loading === false && loadingSystemstatus === false){
             return(
             <div style={{height:"100%"}}>
                 <div className="navbar">

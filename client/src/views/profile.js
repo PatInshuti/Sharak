@@ -96,6 +96,7 @@ const Home = (props) =>{
         fetch(`http://127.0.0.1:6800/api/getUser/${retrievedUserId}`)
         .then(response => response.json())
         .then(data => {
+            console.log(data)
             if (data.status == 400){
                 history.push("/login")
             }
@@ -117,6 +118,11 @@ const Home = (props) =>{
 
     const goTo = (location) =>{
         history.push(location)
+    }
+
+    const logout = () =>{
+        localStorage.removeItem("userId");
+        window.location.reload();
     }
 
     const displayAllContent = () =>{
@@ -169,9 +175,9 @@ const Home = (props) =>{
                             </div> 
                     </div>
     
-                    {/* <div style={{marginTop:"20px", paddingBottom:"70px"}}>
-                        <button className="contact-button">Edit Account Info</button>
-                    </div> */}
+                    <div style={{marginTop:"20px", paddingBottom:"70px"}}>
+                        <button className="contact-button" onClick={()=>logout()}>Logout</button>
+                    </div>
     
                 </div>
     

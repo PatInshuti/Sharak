@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 import nyuadLogo from '../images/nyuad-logo.jpeg';
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const Login = (props) =>{
 
@@ -93,6 +93,7 @@ const Login = (props) =>{
 
                 <div style={{"margin":"0 auto", "marginTop":"15px"}}>
                     <button className="login-button" onClick={(e)=>submitForm(e)}>Login</button>
+                    <div style={{marginTop:"1rem", textAlign:"center"}}><Link to={"/signup"}>Register</Link></div>
                 </div>
             </div>
         </div>
