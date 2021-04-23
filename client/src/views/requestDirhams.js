@@ -16,6 +16,8 @@ const Home = (props) =>{
             username:"",
             email:""
         },
+
+        amount:"",
         loading:true,
         loadingSystemstatus:true,
 
@@ -31,7 +33,7 @@ const Home = (props) =>{
     })
 
 
-    const {userData,systemStatus,loading,loadingSystemstatus} = state;
+    const {userData,amount,systemStatus,loading,loadingSystemstatus} = state;
 
 
     const onChange = e => {
@@ -75,6 +77,32 @@ const Home = (props) =>{
     },[loading])
 
 
+    const sendRequest = (requestType,requester,requestee)=>{
+
+        const data = {"requestType": requestType, "requester":requester, "requestee":requestee, "amount":amount}
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        };
+        
+        fetch('http://127.0.0.1:6800/api/sendRequest', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.status === 200){
+                    console.log("success")
+                }
+
+                else if (data.status === 400){
+                    console.log("Error")
+                }
+        })
+        
+    }
+
+
     useEffect(()=>{
 
             //retrieve data for the whole system
@@ -89,9 +117,6 @@ const Home = (props) =>{
                 else{
     
                     let resp = data.response
-
-                    console.log(data.response)
-
     
                     setState({...state,
                         systemStatus:{
@@ -119,7 +144,7 @@ const Home = (props) =>{
                 <div style={{"display": "flex", "flexDirection": "column", "height":"100%", width:"100%", marginTop:"3.5rem"}}>
                     <div>
                         {
-                            systemStatus.giving_away_campus_dirhams.map((data,index)=>{
+                            systemStatus.giving_away_campus_dirhams.map((data,index)=> {
                                 return(
                                     <div key={data._id} style={{display:"flex", alignItems:"center", justifyContent:"space-between",marginTop:"10px" }}>
                                         <div style={{maxWidth:"60px"}}>
@@ -131,8 +156,8 @@ const Home = (props) =>{
                                         </div>
             
                                         <div>
-                                            <input style={{width:"50px", padding:"5px"}} type="number" pattern="\d*" min={1} max={data.campusDirhams}/>
-                                            <button className="accept-button" style={{marginLeft:"15px"}}>Request</button>
+                                            <input name="amount" value={amount} style={{width:"50px", padding:"5px"}} type="number" pattern="\d*" min={1} max={data.campusDirhams} onChange={(e)=>onChange(e)} />
+                                            <button className="accept-button" style={{marginLeft:"15px"}} onClick={() => sendRequest("campus_dirhams",userData.email,data._id)}>Request</button>
                                         </div>
                                     </div>
                                 )

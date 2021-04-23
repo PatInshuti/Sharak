@@ -16,6 +16,7 @@ const Home = (props) =>{
             username:"",
             email:""
         },
+        amount:"",
         loading:true,
         loadingSystemstatus:true,
 
@@ -27,16 +28,12 @@ const Home = (props) =>{
         systemStatus:{
             giving_away_swipes:[],
             giving_away_campus_dirhams:[]
-        },
+        }
 
-        hello:["helllloo"]
     })
 
 
-    const {userData,systemStatus,loading,loadingSystemstatus} = state;
-
-    console.log(systemStatus)
-
+    const {userData,systemStatus,loading,amount,loadingSystemstatus} = state;
 
 
     const onChange = e => {
@@ -46,6 +43,32 @@ const Home = (props) =>{
 
     const goTo = (location) =>{
         history.push(location)
+    }
+
+    const sendRequest = (requestType,requester,requestee)=>{
+
+        const data = {"requestType": requestType, "requester":requester, "requestee":requestee, "amount":amount}
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        };
+        
+        fetch('http://127.0.0.1:6800/api/sendRequest', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.status === 200){
+                    console.log("success")
+                }
+
+                else if (data.status === 400){
+                    console.log("Error")
+                }
+        })
+
+        
     }
 
 
@@ -130,12 +153,12 @@ const Home = (props) =>{
                                         </div>
             
                                         <div style={{maxWidth:"60px"}}>
-                                            <p style={{color:"var(--mainColor", fontWeight:"500"}}>{data.mealSwipes} mealswipes</p>
+                                            <p style={{color:"var(--mainColor)", fontWeight:"500"}}>{data.mealSwipes} mealswipes</p>
                                         </div>
             
                                         <div>
-                                            <input style={{width:"50px", padding:"5px"}} type="number" pattern="\d*" min={1} max={data.mealSwipes}/>
-                                            <button className="accept-button" style={{marginLeft:"15px"}}>Request</button>
+                                            <input name="amount" value={amount} style={{width:"50px", padding:"5px"}} type="number" pattern="\d*" min={1} max={data.mealSwipes} onChange={(e)=>onChange(e)}/>
+                                            <button className="accept-button" style={{marginLeft:"15px"}} onClick={() => sendRequest("swipe",userData.email,data._id)}>Request</button>
                                         </div>
                                     </div>
                                 )

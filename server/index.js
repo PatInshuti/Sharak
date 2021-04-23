@@ -4,9 +4,10 @@ const path = require('path');
 const cors = require('cors')
 const bodyParser = require("body-parser");
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb://localhost:27017";
-const dbName = "sharak-v3";
+const dbName = "sharak-v4";
+const uri = `mongodb+srv://admin:PASSWORD1!@cluster0.w3gsi.mongodb.net/${dbName}?retryWrites=true&w=majority`;
 const port = 6800;
+const { v4: uuidv4 } = require('uuid');
 var ObjectId = require('mongodb').ObjectId;
 
 MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
@@ -224,16 +225,182 @@ MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (e
           res.json(data)
         })
       })
-
-
-      
-
-
-
   
     })
   
 // ================================== End of system status route ==================================
+
+
+
+// ================================== Beginning requesting route ==================================
+
+app.post("/api/sendRequest", (req, res)=>{
+
+  let data = {
+    status:null,
+    response:null,
+    error:null
+  }
+
+  data.response = {}
+
+  let requestType = req.body.requestType;
+  let requester = req.body.requester;
+  let requestee = req.body.requestee;
+  let amount = req.body.amount;
+
+  requestee = ObjectId(requestee);
+
+  usersCollection.findOne({"_id":requestee}).then(user=>{
+    
+    let newRequest = {
+      requestType,
+      requestee:user.username,
+      amount,
+      "status":"pending",
+      "id":uuidv4()
+    }
+
+    // First the foundReuqester
+    usersCollection.findOne({"email":requester}).then(foundUser=>{
+
+      newRequest["requester"] = foundUser.username;
+      
+      // First fill in the outgoing request for the requester
+      usersCollection.updateOne({"email":requester},{ "$push": { "outGoingRequests": newRequest }}, (err, foundReuqester)=>{
+        if (err) throw err;
+
+        // Secondly fill in incoming requests for the requestee
+        usersCollection.updateOne({"_id":requestee},{ "$push": { "incomingRequests": newRequest }}, (err, resp)=>{
+          if (err) throw err;
+          data.status = 200;
+          res.json(data)
+        })
+    
+      })
+    })
+
+  })
+
+
+
+})
+
+// ================================== End of requesting route ==================================
+
+
+
+
+app.get('/api/getAllRequests/:userId', (req, res) => {
+
+  let data = {
+    status:null,
+    response:null,
+    error:null
+  }
+
+  data.response = {}
+
+  let userId = ObjectId(req.params.userId);
+
+  usersCollection.findOne({"_id":userId}).then(foundUser => {
+      if (foundUser !== null){         
+         data.response["incomingRequests"] = foundUser.incomingRequests;
+         data.response["outGoingRequests"] = foundUser.outGoingRequests;
+         data.status = 200;
+
+        res.json(data)
+
+      }
+
+      else{
+        data.status = 400;
+        res.json(data)
+      }
+  });
+
+})
+
+
+
+app.post('/api/respondingToRequest', (req, res) => {
+
+  let data = {
+    status:null,
+    response:null,
+    error:null
+  }
+
+  data.response = {}
+
+  let userId = ObjectId(req.body.userId);
+  let status = req.body.status;
+  let requester = req.body.requester;
+  let requestType = req.body.requestType;
+  let amount = req.body.amount;
+  let requestId = req.body.requestId;
+
+  console.log(status)
+  console.log(requestId)
+
+  usersCollection.updateOne({
+    "incomingRequests.id":requestId
+  },{ "$set": { "incomingRequests.$.status": status }},false ,true);
+
+
+  usersCollection.updateOne({
+    "outGoingRequests.id":requestId
+  },{ "$set": { "outGoingRequests.$.status": status }},false ,true);
+
+
+  // add the money to the requester
+
+  if (requestType=="swipe" && status == "accepted"){
+      // subtract the money from requestee
+
+      usersCollection.findOne({"_id":userId}).then(foundUser=>{
+        if (foundUser){
+          if (foundUser.mealSwipes >= amount){
+            usersCollection.updateOne({"_id":userId},{"$inc":{ "mealSwipes":parseInt(-amount)}})
+          }
+        }
+      })
+
+      usersCollection.updateOne({"username":requester},{"$inc":{ "mealSwipes":parseInt(amount)}})
+
+      data.status = 200;
+      res.json(data)
+
+  }
+
+
+  if (requestType =="campus_dirhams" && status == "accepted"){
+    usersCollection.updateOne({"_id":userId},{"$set":{}})
+    
+    usersCollection.findOne({"_id":userId}).then(foundUser=>{
+      if (foundUser){
+        if (foundUser.campusDirhams >= amount){
+          usersCollection.updateOne({"_id":userId},{"$inc":{ "campusDirhams":parseInt(-amount)}})
+        }
+      }
+    })
+
+    usersCollection.updateOne({"username":requester},{"$inc":{ "campusDirhams":parseInt(amount)}})
+
+    data.status = 200;
+    res.json(data)
+
+  }
+
+  else{
+    data.status = 200;
+    res.json(data)
+  }
+
+
+
+})
+
 
   app.post('/test', (req, res) => {
     console.log("here")
