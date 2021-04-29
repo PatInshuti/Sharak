@@ -23,7 +23,7 @@ const Login = (props) =>{
         let retrievedUserId = localStorage.getItem("userId");
         // check if the user exists in the database
 
-        fetch(`http://127.0.0.1:6800/api/getUser/${retrievedUserId}`)
+        fetch(`api/getUser/${retrievedUserId}`)
         .then(response => response.json())
         .then(data => {
 
@@ -50,7 +50,7 @@ const Login = (props) =>{
                 body: JSON.stringify(data)
             };
           
-            fetch('http://127.0.0.1:6800/api/login', requestOptions)
+            fetch('api/login', requestOptions)
                 .then(response => response.json())
                 .then(data => {
 

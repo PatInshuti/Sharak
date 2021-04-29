@@ -32,7 +32,7 @@ const Signup = (props) =>{
                 body: JSON.stringify(data)
             };
           
-            fetch('http://127.0.0.1:6800/api/signup', requestOptions)
+            fetch('api/signup', requestOptions)
                 .then(response => response.json())
                 .then(data => {
 

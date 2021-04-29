@@ -52,7 +52,7 @@ const Home = (props) =>{
         // check if the user exists in the database
 
         //retriece user's data
-        fetch(`http://127.0.0.1:6800/api/getUser/${retrievedUserId}`)
+        fetch(`api/getUser/${retrievedUserId}`)
         .then(response => response.json())
         .then(data => {
 
@@ -87,7 +87,7 @@ const Home = (props) =>{
             body: JSON.stringify(data)
         };
         
-        fetch('http://127.0.0.1:6800/api/sendRequest', requestOptions)
+        fetch('api/sendRequest', requestOptions)
             .then(response => response.json())
             .then(data => {
 
@@ -106,7 +106,7 @@ const Home = (props) =>{
     useEffect(()=>{
 
             //retrieve data for the whole system
-            fetch(`http://127.0.0.1:6800/api/systemStatus`)
+            fetch(`api/systemStatus`)
             .then(response => response.json())
             .then(data => {
     

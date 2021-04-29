@@ -43,7 +43,7 @@ const Requests = (props) =>{
         // check if the user exists in the database
 
         //retriece user's data
-        fetch(`http://127.0.0.1:6800/api/getAllRequests/${retrievedUserId}`)
+        fetch(`getAllRequests/${retrievedUserId}`)
         .then(response => response.json())
         .then(data => {
 
@@ -109,7 +109,7 @@ const Requests = (props) =>{
             body: JSON.stringify(data)
         };
       
-        fetch('http://127.0.0.1:6800/api/respondingToRequest', requestOptions)
+        fetch('respondingToRequest', requestOptions)
             .then(response => response.json())
             .then(data => {
     
@@ -119,7 +119,7 @@ const Requests = (props) =>{
                     // check if the user exists in the database
             
                     //retriece user's data
-                    fetch(`http://127.0.0.1:6800/api/getAllRequests/${retrievedUserId}`)
+                    fetch(`getAllRequests/${retrievedUserId}`)
                     .then(response => response.json())
                     .then(data => {
             
