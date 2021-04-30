@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const MongoClient = require('mongodb').MongoClient;
 const dbName = "sharak-v4";
 const uri = `mongodb+srv://admin:PASSWORD1!@cluster0.w3gsi.mongodb.net/${dbName}?retryWrites=true&w=majority`;
-const port = 6800;
+const port = process.env.PORT || 6800;
 const { v4: uuidv4 } = require('uuid');
 var ObjectId = require('mongodb').ObjectId;
 
