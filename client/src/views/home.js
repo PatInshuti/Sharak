@@ -120,7 +120,7 @@ const Home = (props) =>{
                     })
                 }
             })
-    },[loadingSystemstatus])
+    },[])
 
     const displayUserOptions = () =>{
 
@@ -154,15 +154,7 @@ const Home = (props) =>{
 
 
     const displayAllContent = () =>{
-        if (loading === true || loadingSystemstatus === true){
-            return(
-                <div style={{height:"100%", display:"flex", justifyContent:"center", alignItems:"center"}}>
-                    <h3>Loading...</h3>
-                </div>
-            )
-        }
-
-        else if(loading === false && loadingSystemstatus === false){
+         if(loading == false){
             return(
             <div style={{height:"100%"}}>
                 <div className="navbar">
