@@ -80,47 +80,44 @@ const Home = (props) =>{
 
             else{
 
-                setState({...state,
-                    userData:data.response,
-                    loading:false,
-                    giving_swipes_status:data.response.givingSwipesStatus,
-                    giving_campus_dirhams_status:data.response.givingCampusDirhamsStatus,
-                    meal_swipes:data.response.mealSwipes,
-                    campus_dirhams:data.response.campusDirhams,
-                    userStatus:data.response.userStatus
+                //retrieve data for the whole system
+                fetch(`api/systemStatus`)
+                .then(response => response.json())
+                .then(data2 => {
+
+                    if (data2.status == 400){
+                        console.log("easter egg")
+                    }
+
+                    else{
+
+                        let resp = data2.response
+
+                        setState({...state,
+                            userData:data.response,
+                            loading:false,
+                            giving_swipes_status:data.response.givingSwipesStatus,
+                            giving_campus_dirhams_status:data.response.givingCampusDirhamsStatus,
+                            meal_swipes:data.response.mealSwipes,
+                            campus_dirhams:data.response.campusDirhams,
+                            userStatus:data.response.userStatus,
+                            systemStatus:{
+                                ...state.systemStatus,
+                                giving_away_campus_dirhams:resp.givingCampusDirhams,
+                                giving_away_swipes:resp.givingSwipes,
+                            },
+                            loadingSystemstatus:false
+                        })
+                    }
                 })
+
             }
         })
 
-    },[loading])
 
 
-    useEffect(()=>{
+    },[loading,loadingSystemstatus])
 
-            //retrieve data for the whole system
-            fetch(`api/systemStatus`)
-            .then(response => response.json())
-            .then(data => {
-    
-                if (data.status == 400){
-                    console.log("easter egg")
-                }
-    
-                else{
-    
-                    let resp = data.response
-    
-                    setState({...state,
-                        systemStatus:{
-                            ...state.systemStatus,
-                            giving_away_campus_dirhams:resp.givingCampusDirhams,
-                            giving_away_swipes:resp.givingSwipes,
-                        },
-                        loadingSystemstatus:false
-                    })
-                }
-            })
-    },[loadingSystemstatus])
 
     const displayUserOptions = () =>{
 
@@ -154,7 +151,16 @@ const Home = (props) =>{
 
 
     const displayAllContent = () =>{
-         if(loading == false){
+
+        if (loading == true || loadingSystemstatus == true){
+            <div style={{height:"100%"}}>
+                <div style={{height:"100%", display:"flex", justifyContent:"center", alignItems:"center"}}>
+                    <h3>Loading...</h3>
+                </div>
+            </div>
+        }
+
+         if(loading == false && loadingSystemstatus == false){
             return(
             <div style={{height:"100%"}}>
                 <div className="navbar">
