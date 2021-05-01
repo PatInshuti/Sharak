@@ -120,7 +120,7 @@ const Home = (props) =>{
                     })
                 }
             })
-    },[])
+    },[loadingSystemstatus])
 
     const displayUserOptions = () =>{
 
